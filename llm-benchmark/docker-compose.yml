@@ -1,0 +1,22 @@
+services:
+  llm-benchmark:
+    build: .
+    networks:
+      - llama-net
+    volumes:
+      - ./results:/results
+    environment:
+      - MPLBACKEND=Agg
+    command: >
+      llamacpp Qwen3.5-35B-A3B-UD-Q6_K_XL
+      --host llama
+      --port 8080
+      --contexts 1,2,4,8,16,32,64,128
+      --max-tokens 200
+      --timeout 7200
+      --output-csv /results/benchmark_results.csv
+      --output-chart /results/benchmark_chart.png
+
+networks:
+  llama-net:
+    external: true

@@ -1,0 +1,37 @@
+services:
+  llama-vision:
+    image: ghcr.io/ggml-org/llama.cpp:server-cuda
+    container_name: Qwen3.5-q6-vision
+    restart: unless-stopped
+    ports:
+      - "1234:8080"
+    volumes:
+      - ~/.lmstudio/models:/models
+    networks:
+      - llama-net
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    command: >
+      --model /models/unsloth/Qwen3.5-35B-A3B-GGUF/Qwen3.5-35B-A3B-UD-Q6_K_XL.gguf
+      --mmproj /models/unsloth/Qwen3.5-35B-A3B-GGUF/mmproj-F32.gguf
+      --host 0.0.0.0
+      -c 131072
+      --gpu-layers 99
+      --n-cpu-moe 32
+      --threads 12
+      --threads-batch 12
+      --flash-attn on
+      --parallel 1
+      --batch-size 2048
+      --ubatch-size 2048
+      --cache-type-k f16
+      --cache-type-v f16
+      --defrag-thold 0.5
+      --jinja
+      --metrics
+      --reasoning-budget 0
+
+networks:
+  llama-net:
+    name: llama-net
