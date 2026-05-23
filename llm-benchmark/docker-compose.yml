@@ -8,7 +8,7 @@ services:
     environment:
       - MPLBACKEND=Agg
     command: >
-      llamacpp Qwen3.5-35B-A3B-UD-Q6_K_XL
+      llamacpp gemma-4-26B-A4B-it-Q6_K
       --host llama
       --port 8080
       --contexts 1,2,4,8,16,32,64,128

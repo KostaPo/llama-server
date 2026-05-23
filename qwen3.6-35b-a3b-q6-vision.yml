@@ -1,7 +1,7 @@
 services:
-  llama:
-    image: ghcr.io/ggml-org/llama.cpp:server-cuda
-    container_name: Qwen3.5-q6-chat
+  llama-vision:
+    image: ghcr.io/ggml-org/llama.cpp:server-cuda-b9294
+    container_name: Qwen3.6-Q6-vision
     restart: unless-stopped
     ports:
       - "1234:8080"
@@ -13,8 +13,8 @@ services:
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
     command: >
-      --model /models/unsloth/Qwen3.5-35B-A3B-GGUF/Qwen3.5-35B-A3B-UD-Q6_K_XL.gguf
-      --no-mmproj
+      --model /models/lmstudio-community/Qwen3.6-35B-A3B-GGUF/Qwen3.6-35B-A3B-Q6_K.gguf
+      --mmproj /models/lmstudio-community/Qwen3.6-35B-A3B-GGUF/mmproj-Qwen3.6-35B-A3B-BF16.gguf
       --host 0.0.0.0
       -c 131072
       --gpu-layers 99

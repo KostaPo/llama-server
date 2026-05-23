@@ -1,0 +1,36 @@
+services:
+  llama:
+    image: ghcr.io/ggml-org/llama.cpp:server-cuda-b9294
+    container_name: Gemma-4-q6-chat
+
+    restart: unless-stopped
+    ports:
+      - "1234:8080"
+    volumes:
+      - ~/.lmstudio/models:/models
+    networks:
+      - llama-net
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    command: >
+      --model /models/lmstudio-community/gemma-4-26B-A4B-it-GGUF/gemma-4-26B-A4B-it-Q6_K.gguf
+      --no-mmproj
+      --host 0.0.0.0
+      -c 131072
+      --gpu-layers 99
+      --n-cpu-moe 32
+      --threads 12
+      --threads-batch 12
+      --flash-attn on
+      --parallel 1
+      --batch-size 2048
+      --ubatch-size 2048
+      --cache-type-k f16
+      --cache-type-v f16
+      --jinja
+      --metrics
+
+networks:
+  llama-net:
+    name: llama-net
